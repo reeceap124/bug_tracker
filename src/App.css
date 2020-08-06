@@ -1,8 +1,8 @@
-.registration {
+.authForm {
   max-width: 50%;
   border: 1px solid gray;
   border-radius: .5rem;
-  padding: 2%;
-  margin: 3% auto;
+  padding: 2% 5%;
+  margin: 2% auto;
 }
 
