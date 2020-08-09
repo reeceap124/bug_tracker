@@ -6,9 +6,12 @@ import Register from './components/Register'
 import Login from './components/Login'
 import Dash from './components/dash/Dash'
 
-function App() {
+function App(props) {
+  console.log('PROPS', props)
   return (
+    
     <div className="App">
+      <Route exact path='/' render={props => props.history.push('/register')}/>
       <Route path='/register' component={Register}/>
       <Route path='/login' component={Login}/>
       <PrivateRoute path='/dash' component={Dash}/>
