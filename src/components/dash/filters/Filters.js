@@ -14,11 +14,13 @@ const Filters = (props) => {
         return issues.map(issue=>{
             if(!(issue[filter] in table)) {
                 table[issue[filter]] = 1
-                return <Button key={`${issue.title}button`} outline active color='secondary' onClick={(e)=>{
+                return <Button key={`${issue.title}button`} outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    console.log(`Filter: ${filter} \nValue: ${issue[filter]}`)
                     props.updateFiltered([filter, issue[filter]])
                 }}>{issue[filter]}</Button>
+            }
+            else {
+                table[issue[filter]] ++
             }
         })
     }
@@ -27,7 +29,7 @@ const Filters = (props) => {
             <h2>Filters</h2>
             <div>
                 <h3>Orgs</h3>
-                <Button outline active color='secondary' onClick={(e)=>{
+                <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
                     props.updateFiltered(['org', 'all'])
                 }}>All</Button>
@@ -35,7 +37,7 @@ const Filters = (props) => {
             </div>
             <div>
                 <h3>Projects</h3>
-                <Button outline active color='secondary' onClick={(e)=>{
+                <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
                     props.updateFiltered(['project', 'all'])
                 }}>All</Button>
@@ -49,7 +51,7 @@ const Filters = (props) => {
             </div>
             <div>
                 <h3>Priority</h3>
-                <Button outline active color='secondary' onClick={(e)=>{
+                <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
                     props.updateFiltered(['importance', 'all'])
                 }}>All</Button>
@@ -57,7 +59,7 @@ const Filters = (props) => {
             </div>
             <div>
                 <h3>Role</h3>
-                <Button outline active color='secondary' onClick={(e)=>{
+                <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
                     props.updateFiltered(['role', 'all'])
                 }}>All</Button>

@@ -6,3 +6,11 @@
   margin: 2% auto;
 }
 
+.dashWrapper {
+  display: flex;
+  justify-content: space-around;
+  max-width: 50%;
+  margin: auto;
+
+}
+

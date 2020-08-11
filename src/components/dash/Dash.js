@@ -5,8 +5,8 @@ import IssueList from './issueList/IssueList'
 
 const Dash = () => {
     const [issues, setIssues] = useState([])
-    const [filters, setFilters] = useState({})
     const [filtered, setFiltered] = useState([])
+    const [filters, setFilters] = useState({})
     useEffect(()=>{
         axiosAuth().get('/issues/1')
         .then(res => {
@@ -17,67 +17,55 @@ const Dash = () => {
             console.log('There was an issue retrieving your issues')
         })
     }, [])
-    // array ---> [filter, value]
-    const updateFilteredIssues = (arr) => {
-        console.log('filtered on click', filters)
+
+    //Used in onFilterClick to clean up the filters update
+    const updateFilters = (filters, filter, val, del = false) => {
+        if (del) {
+            delete filters[filter]
+        }
+        else {
+            filters[filter] = val
+        }
+        return filters
+    }
+    
+    const onFilterClick = async (arr) => {  // arr = [filter, value]
         const filter = arr[0]
         const val = arr[1]
-        if ((filters.hasOwnProperty(filter)) && val === 'all') {
-            setFilters(()=>{ //Not sure if there's a better/more concise way to do this
-                const newObj = {}
-                for (let prop in filters) {
-                    if(filters.hasOwnProperty(prop) && prop !== filter) {
-                        newObj[prop] = filters[prop]
-                    }
+        //awaiting the results keeps the current render up to date with the click event
+        if (filters.hasOwnProperty(filter)) {
+            //Clicking all or reclicking a filter will remove that filter from the list
+            if ((val === filters[filter]) || (val === 'all')) {
+                await setFilters(updateFilters(filters, filter, val, true))
+            }
+            //Reassigns a new value to an already existing filter
+            else {
+                await setFilters(updateFilters(filters, filter, val))
+            }
+        }
+        else {
+            //adds a new filter to list as long as the value is not 'all'
+            if (val !== 'all') {
+                await setFilters(updateFilters(filters, filter, val))
+            }
+        }
+        setFiltered(issues.filter(issue=>{
+            let addIssue = true;
+            //Check the issue against each filter
+            for (const filter in filters) {
+                if (issue[filter] !== filters[filter]) {
+                    addIssue = false
                 }
-                return newObj
-            })
-            setFiltered(()=>{
-                let temp = []
-                issues.forEach(issue=>{
-                    for (const f in filters) {
-                    if ((issue[f] === filters[f]) && !temp.includes(issue)) {
-                        
-                        temp.push(issue)
-                    }
-                    }
-                })
-                return temp
-            })
-        }
-        else if ((filters.hasOwnProperty(filter)) && (filters[filter] !== val)) {
-            setFilters(()=>{
-            let temp = filters;
-            temp[filter] = val
-            return temp
-        })
-            setFiltered(()=>{
-                let temp = []
-                issues.forEach(issue=>{
-                    for (const f in filters) {
-                    if (issue[f] === val) {
-                        temp.push(issue)
-                    }
-                    }
-                })
-                return temp
-            })
-        }
-        else if (!filters.hasOwnProperty(filter)) {
-            setFilters(()=>{
-            let temp = filters;
-            temp[filter] = val
-            return temp
-        })
-            setFiltered(filtered.filter(issue=>{return issue[filter] === val}))
-        }
+            }
+            // Wont return if any of the filters match the issue
+            if (addIssue) {return issue}
+        }))
     }
     return (
-        <div>
-            <h1>Hello from the dash</h1>
+        <div className='dashWrapper'>
+            
+            <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
-            <p>_________________________________________________</p>
-            <Filters issues={issues} updateFiltered={updateFilteredIssues}/>
         </div>
         
     )

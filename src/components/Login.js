@@ -3,7 +3,6 @@ import axios from 'axios';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const Login = (props) => {
-    const [isLoading, setIsLoading] = useState(false)
     const [creds, setCreds] = useState({
         email: '',
         password: ''
@@ -17,7 +16,6 @@ const Login = (props) => {
     }
     const login = e => {
         e.preventDefault()
-        setIsLoading(true)
         axios.post('http://localhost:3300/api/auth/login', creds)
         .then(res=>{
             console.log("data: ", res.data)
@@ -29,7 +27,6 @@ const Login = (props) => {
         })
         .finally(()=>{
             return(
-                setIsLoading(false),
                 setCreds({
                     email: '',
                     password: ''
