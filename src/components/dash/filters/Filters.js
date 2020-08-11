@@ -16,7 +16,6 @@ const Filters = (props) => {
                 table[issue[filter]] = 1
                 return <Button key={`${issue.title}button`} outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    console.log(`Filter: ${filter} \nValue: ${issue[filter]}`)
                     props.updateFiltered([filter, issue[filter]])
                 }}>{issue[filter]}</Button>
             }

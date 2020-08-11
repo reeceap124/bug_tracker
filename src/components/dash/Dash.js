@@ -7,7 +7,6 @@ const Dash = () => {
     const [issues, setIssues] = useState([])
     const [filtered, setFiltered] = useState([])
     const [filters, setFilters] = useState({})
-    let excluded = {};
     useEffect(()=>{
         axiosAuth().get('/issues/1')
         .then(res => {
@@ -18,58 +17,54 @@ const Dash = () => {
             console.log('There was an issue retrieving your issues')
         })
     }, [])
-    // array ---> [filter, value]
-    const updateFilteredIssues = async (arr) => {
+
+    //Used in onFilterClick to clean up the filters update
+    const updateFilters = (filters, filter, val, del = false) => {
+        if (del) {
+            delete filters[filter]
+        }
+        else {
+            filters[filter] = val
+        }
+        return filters
+    }
+    
+    const onFilterClick = async (arr) => {  // arr = [filter, value]
         const filter = arr[0]
         const val = arr[1]
+        //awaiting the results keeps the current render up to date with the click event
         if (filters.hasOwnProperty(filter)) {
-            console.log('it is in filters')
+            //Clicking all or reclicking a filter will remove that filter from the list
             if ((val === filters[filter]) || (val === 'all')) {
-                console.log('Value is the same')
-                await setFilters(()=>{
-                    let temp = filters;
-                    delete temp[filter];
-                    return temp
-                })
+                await setFilters(updateFilters(filters, filter, val, true))
             }
+            //Reassigns a new value to an already existing filter
             else {
-                console.log('value is not the same')
-                await setFilters(()=> {
-                    let temp = filters;
-                    temp[filter] = val
-                    return temp
-                })
+                await setFilters(updateFilters(filters, filter, val))
             }
         }
         else {
+            //adds a new filter to list as long as the value is not 'all'
             if (val !== 'all') {
-                await setFilters(()=>{
-                    let temp = filters;
-                    temp[filter] = val;
-                    return temp
-                })
+                await setFilters(updateFilters(filters, filter, val))
             }
-            
         }
-        console.log("FILTERS:", filters)
         setFiltered(issues.filter(issue=>{
-            
             let addIssue = true;
-            for (const f in filters) {
-                if (issue[f] !== filters[f]) {
+            //Check the issue against each filter
+            for (const filter in filters) {
+                if (issue[filter] !== filters[filter]) {
                     addIssue = false
                 }
             }
-            if (addIssue) {
-                return issue
-            }
+            // Wont return if any of the filters match the issue
+            if (addIssue) {return issue}
         }))
-        
     }
     return (
         <div className='dashWrapper'>
             
-            <Filters issues={issues} updateFiltered={updateFilteredIssues}/>
+            <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
         </div>
         
