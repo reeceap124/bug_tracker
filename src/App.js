@@ -7,7 +7,6 @@ import Login from './components/Login'
 import Dash from './components/dash/Dash'
 
 function App(props) {
-  // console.log('PROPS', props)
   return (
     
     <div className="App">

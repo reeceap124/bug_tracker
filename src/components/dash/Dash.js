@@ -28,6 +28,21 @@ const Dash = () => {
         }
         return filters
     }
+    //Used in onFilterClick to clean up setFiltered() function
+    const updateFilteredIssues = () => {
+        const updated = issues.filter(issue=>{
+            let addIssue = true;
+            //Check the issue against each filter
+            for (const filter in filters) {
+                if (issue[filter] !== filters[filter]) {
+                    addIssue = false
+                }
+            }
+            // Wont return if any of the filters match the issue
+            if (addIssue) {return issue}
+        })
+        return updated
+    }
     
     const onFilterClick = async (arr) => {  // arr = [filter, value]
         const filter = arr[0]
@@ -49,17 +64,8 @@ const Dash = () => {
                 await setFilters(updateFilters(filters, filter, val))
             }
         }
-        setFiltered(issues.filter(issue=>{
-            let addIssue = true;
-            //Check the issue against each filter
-            for (const filter in filters) {
-                if (issue[filter] !== filters[filter]) {
-                    addIssue = false
-                }
-            }
-            // Wont return if any of the filters match the issue
-            if (addIssue) {return issue}
-        }))
+        //Updates the list of issues to be rendered
+        setFiltered(updateFilteredIssues())
     }
     return (
         <div className='dashWrapper'>
