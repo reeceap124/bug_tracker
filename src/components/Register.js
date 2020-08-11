@@ -3,7 +3,6 @@ import axios from 'axios'
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const Register = (props) => {
-    const [isLoading, setIsLoading] = useState(false)
     const [creds, setCreds] = useState({
         email: '',
         password: '',
@@ -24,7 +23,6 @@ const Register = (props) => {
         if (creds.password !== creds.passCopy) {
             return console.log('Pass and passcopy must match')
         }
-        setIsLoading(true)
         axios.post('http://localhost:3300/api/auth/register', {
             email: creds.email,
             password: creds.password,
@@ -41,7 +39,6 @@ const Register = (props) => {
         })
         .finally(()=>{
             return(
-                setIsLoading(false),
                 setCreds({
                     email: '',
                     password: '',

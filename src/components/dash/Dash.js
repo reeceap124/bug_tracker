@@ -5,8 +5,9 @@ import IssueList from './issueList/IssueList'
 
 const Dash = () => {
     const [issues, setIssues] = useState([])
-    const [filters, setFilters] = useState({})
     const [filtered, setFiltered] = useState([])
+    const [filters, setFilters] = useState({})
+    let excluded = {};
     useEffect(()=>{
         axiosAuth().get('/issues/1')
         .then(res => {
@@ -18,66 +19,58 @@ const Dash = () => {
         })
     }, [])
     // array ---> [filter, value]
-    const updateFilteredIssues = (arr) => {
-        console.log('filtered on click', filters)
+    const updateFilteredIssues = async (arr) => {
         const filter = arr[0]
         const val = arr[1]
-        if ((filters.hasOwnProperty(filter)) && val === 'all') {
-            setFilters(()=>{ //Not sure if there's a better/more concise way to do this
-                const newObj = {}
-                for (let prop in filters) {
-                    if(filters.hasOwnProperty(prop) && prop !== filter) {
-                        newObj[prop] = filters[prop]
-                    }
+        if (filters.hasOwnProperty(filter)) {
+            console.log('it is in filters')
+            if ((val === filters[filter]) || (val === 'all')) {
+                console.log('Value is the same')
+                await setFilters(()=>{
+                    let temp = filters;
+                    delete temp[filter];
+                    return temp
+                })
+            }
+            else {
+                console.log('value is not the same')
+                await setFilters(()=> {
+                    let temp = filters;
+                    temp[filter] = val
+                    return temp
+                })
+            }
+        }
+        else {
+            if (val !== 'all') {
+                await setFilters(()=>{
+                    let temp = filters;
+                    temp[filter] = val;
+                    return temp
+                })
+            }
+            
+        }
+        console.log("FILTERS:", filters)
+        setFiltered(issues.filter(issue=>{
+            
+            let addIssue = true;
+            for (const f in filters) {
+                if (issue[f] !== filters[f]) {
+                    addIssue = false
                 }
-                return newObj
-            })
-            setFiltered(()=>{
-                let temp = []
-                issues.forEach(issue=>{
-                    for (const f in filters) {
-                    if ((issue[f] === filters[f]) && !temp.includes(issue)) {
-                        
-                        temp.push(issue)
-                    }
-                    }
-                })
-                return temp
-            })
-        }
-        else if ((filters.hasOwnProperty(filter)) && (filters[filter] !== val)) {
-            setFilters(()=>{
-            let temp = filters;
-            temp[filter] = val
-            return temp
-        })
-            setFiltered(()=>{
-                let temp = []
-                issues.forEach(issue=>{
-                    for (const f in filters) {
-                    if (issue[f] === val) {
-                        temp.push(issue)
-                    }
-                    }
-                })
-                return temp
-            })
-        }
-        else if (!filters.hasOwnProperty(filter)) {
-            setFilters(()=>{
-            let temp = filters;
-            temp[filter] = val
-            return temp
-        })
-            setFiltered(filtered.filter(issue=>{return issue[filter] === val}))
-        }
+            }
+            if (addIssue) {
+                return issue
+            }
+        }))
+        
     }
     return (
-        <div>
-            <h1>Hello from the dash</h1>
-            <IssueList list={filtered}/>
-            <p>_________________________________________________</p>
+        <div className='dashWrapper'>
+            
             <Filters issues={issues} updateFiltered={updateFilteredIssues}/>
+            <IssueList list={filtered}/>
         </div>
         
     )
