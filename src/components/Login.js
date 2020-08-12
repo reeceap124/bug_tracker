@@ -20,7 +20,7 @@ const Login = (props) => {
         axios.post('http://localhost:3300/api/auth/login', creds)
         .then(res=>{
             localStorage.setItem('token', res.data.token)
-            props.history.push('/dash')
+            props.history.push(`/dash/${res.data.user.id}`)
         })
         .catch(err=>{
             setMessage('Login Error')

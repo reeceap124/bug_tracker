@@ -8,6 +8,7 @@ const Filters = (props) => {
     let orgs = {}
     let roles = {}
     let importance = {}
+    let active = {}
     //Pass in filter string and the cache table to dynamically render filters.
     //May incorporate into a <div> creator to dynamically create each section.
     const getFilters = (filter, table) => {
@@ -44,10 +45,9 @@ const Filters = (props) => {
                 {getFilters('project', projects)}
             </div>
             <div>
-                <h3>Status</h3>
+                <h3>Open</h3>
                 <p>All</p>
-                <p>Open</p>
-                <p>Closed</p>
+                {getFilters('open', active)}
             </div>
             <div>
                 <h3>Priority</h3>

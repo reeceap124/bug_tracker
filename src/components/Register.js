@@ -32,7 +32,7 @@ const Register = (props) => {
             last_name: creds.last_name
         })
         .then(res=>{
-            props.history.push('/dash')
+            props.history.push(`/dash/${res.data.id}`)
         })
         .catch(err=>{
             setMessage('Registration Error')

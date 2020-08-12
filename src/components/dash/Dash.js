@@ -3,13 +3,16 @@ import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
 
-const Dash = () => {
+const Dash = (props) => {
     const [issues, setIssues] = useState([])
     const [filtered, setFiltered] = useState([])
     const [filters, setFilters] = useState({})
     useEffect(()=>{
-        axiosAuth().get('/issues/1')
+        axiosAuth().get(`/issues/${props.match.params}`)
         .then(res => {
+            if (res.data.error && res.data.message) {
+                return console.error(res.data)
+            }
             setIssues(res.data)
             setFiltered(res.data)
         })
