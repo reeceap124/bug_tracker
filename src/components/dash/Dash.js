@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
+import OrgModal from './modals/OrgModal';
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([])
@@ -72,10 +73,9 @@ const Dash = (props) => {
     }
     return (
         <div className='dashWrapper'>
-            
             <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
-            
+            <OrgModal/>
         </div>
         
     )

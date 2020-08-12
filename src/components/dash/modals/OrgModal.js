@@ -3,44 +3,71 @@ import {axiosAuth} from '../../../util/axiosAuth'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap'
 
 const OrgModal = (props) => {
-    const {modalChoice, toggle, openModal, requestType} = props;
-    const orgUpdate = props.orgUpdate?props.orgUpdate:null
+    const [requestType, setRequestType] = useState('post')
     const [org, setOrg] = useState({
-        title: orgUpdate.title || '',
-        description: orgUpdate.description || ''
+        title: '',
+        description: ''
     });
-    const modalOn = (modalChoice==='org' && openModal)?true:false
+    if (props.updateOrg) {
+        setOrg(props.updateOrg)
+    }
+    const [isOpen, setIsOpen] = useState(false)
+    const toggle = () => {
+        setIsOpen(!isOpen)
+    }
+
     const handleSubmit = (e) => {
-        e.preventDefault
-        axiosAuth()[requestType?'post':'put'](`orgs/${requestType?'':org.id}`)
+        e.preventDefault()
+        axiosAuth()[requestType](`orgs/${requestType==='post'?'':org.id}`,  org)
         .then((res)=>{
             console.log('added issue', res)
         })
         .catch(err=>{
-            return console.error("There was an issue submitting this issue", err)
+            console.error("There was an issue submitting this issue", err)
+        })
+        .finally(()=>{
+            toggle()
+            setOrg({
+                title:'',
+                description: ''
+            })
+        })
+    }
+    const handleChanges = e => {
+        e.preventDefault()
+        setOrg({
+            ...org,
+            [e.target.name] : e.target.value
         })
     }
 
     return (
-        <Modal isOpen={modalOn} toggle={toggle}>
-            <ModalHeader toggle={toggle}>{requestType?'Create New Organization':'Update Organization'}</ModalHeader>
-            <ModalBody>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label for='title'>Title</Label>
-                        <Input name='title' placeholder='Organization Name/Title' onChange={handleChanges} value={org.title}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Lable for='description'>Description</Lable>
-                        <Input name='description' placeholder='A little blurb about your org' onChange={handleChanges} value={org.description}/>
-                    </FormGroup>
-                    <Button>{requestType?'Create':'Update'}</Button>
-                </Form>
-            </ModalBody>
-            <ModalFooter>
-                <Button onClick={toggle}>Cancel</Button>
-            </ModalFooter>
-        </Modal>
+        <div>
+            <Button onClick={toggle}>Org</Button>
+            <Modal isOpen={isOpen} toggle={toggle}>
+                <ModalHeader toggle={toggle}>About Your Organization</ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={handleSubmit}>
+                        <FormGroup>
+                            <Label for='title'>Title</Label>
+                            <Input name='title' placeholder='Organization Name/Title' onChange={handleChanges} value={org.title}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for='description'>Description</Label>
+                            <Input name='description' placeholder='A little blurb about your org' onChange={handleChanges} value={org.description}/>
+                        </FormGroup>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
+                </ModalBody>
+                <ModalFooter>
+                    <Button onClick={()=>{
+                        toggle()
+                        setOrg({title:'',description:''})
+                    }}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+        </div>
+        
     )
 }
 
