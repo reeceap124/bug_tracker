@@ -3,13 +3,16 @@ import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
 
-const Dash = () => {
+const Dash = (props) => {
     const [issues, setIssues] = useState([])
     const [filtered, setFiltered] = useState([])
     const [filters, setFilters] = useState({})
     useEffect(()=>{
-        axiosAuth().get('/issues/1')
+        axiosAuth().get(`/issues/${props.match.params.id}`)
         .then(res => {
+            if (res.data.error && res.data.message) {
+                return console.error(res.data)
+            }
             setIssues(res.data)
             setFiltered(res.data)
         })
@@ -27,6 +30,21 @@ const Dash = () => {
             filters[filter] = val
         }
         return filters
+    }
+    //Used in onFilterClick to clean up setFiltered() function
+    const updateFilteredIssues = () => {
+        const updated = issues.filter(issue=>{
+            let addIssue = true;
+            //Check the issue against each filter
+            for (const filter in filters) {
+                if (issue[filter] !== filters[filter]) {
+                    addIssue = false
+                }
+            }
+            // Wont return if any of the filters match the issue
+            if (addIssue) {return issue}
+        })
+        return updated
     }
     
     const onFilterClick = async (arr) => {  // arr = [filter, value]
@@ -49,23 +67,15 @@ const Dash = () => {
                 await setFilters(updateFilters(filters, filter, val))
             }
         }
-        setFiltered(issues.filter(issue=>{
-            let addIssue = true;
-            //Check the issue against each filter
-            for (const filter in filters) {
-                if (issue[filter] !== filters[filter]) {
-                    addIssue = false
-                }
-            }
-            // Wont return if any of the filters match the issue
-            if (addIssue) {return issue}
-        }))
+        //Updates the list of issues to be rendered
+        setFiltered(updateFilteredIssues())
     }
     return (
         <div className='dashWrapper'>
             
             <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
+            
         </div>
         
     )

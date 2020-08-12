@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const Login = (props) => {
+    const [message, setMessage] = useState(null);
     const [creds, setCreds] = useState({
         email: '',
         password: ''
@@ -18,12 +19,12 @@ const Login = (props) => {
         e.preventDefault()
         axios.post('http://localhost:3300/api/auth/login', creds)
         .then(res=>{
-            console.log("data: ", res.data)
             localStorage.setItem('token', res.data.token)
-            props.history.push('/dash')
+            props.history.push(`/dash/${res.data.user.id}`)
         })
         .catch(err=>{
-            console.log("Login Error", err)
+            setMessage('Login Error')
+            return err
         })
         .finally(()=>{
             return(
@@ -36,8 +37,9 @@ const Login = (props) => {
     }
 
     return (
-        <Form className='authForm'>
+        <Form className='authForm' onSubmit={login}>
             <h2>Login</h2>
+            {message?<p>{message}</p>:null}
             <FormGroup>
                 <Label for='email'>Email</Label>
                 <Input type='email' name='email' id='email' placeholder='Valid Email' onChange={handleChanges} value={creds.email}/>
@@ -46,7 +48,7 @@ const Login = (props) => {
                 <Label for='password'>Password</Label>
                 <Input type='password' name='password' id='password' placeholder='Enter Password' onChange={handleChanges} value={creds.password}/>
             </FormGroup>
-            <Button onClick={login}>Submit</Button>
+            <Button type='submit'>Submit</Button>
         </Form>
     )
 }

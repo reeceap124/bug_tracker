@@ -3,6 +3,7 @@ import axios from 'axios'
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const Register = (props) => {
+    const [message, setMessage] = useState(null)
     const [creds, setCreds] = useState({
         email: '',
         password: '',
@@ -21,7 +22,7 @@ const Register = (props) => {
     const register = e => {
         e.preventDefault()
         if (creds.password !== creds.passCopy) {
-            return console.log('Pass and passcopy must match')
+            return setMessage('Passwords Must Match')
         }
         axios.post('http://localhost:3300/api/auth/register', {
             email: creds.email,
@@ -31,11 +32,11 @@ const Register = (props) => {
             last_name: creds.last_name
         })
         .then(res=>{
-            console.log("data: ", res.data)
-            props.history.push('/dash')
+            props.history.push(`/dash/${res.data.id}`)
         })
         .catch(err=>{
-            console.log("Login Error", err)
+            setMessage('Registration Error')
+            return err
         })
         .finally(()=>{
             return(
@@ -52,6 +53,7 @@ const Register = (props) => {
     return (
         <Form className='authForm' onSubmit={register}>
             <h2>Sign up</h2>
+            {message?<p>{message}</p>:null}
             <FormGroup>
                 <Label for='email'>Email</Label>
                 <Input type='email' name='email' id='email' placeholder='Valid Email' onChange={handleChanges} value={creds.email}/>
@@ -76,7 +78,7 @@ const Register = (props) => {
                 <Label for='lName'>Last Name</Label>
                 <Input type='text' name='lName' id='lName' placeholder='(optional)' onChange={handleChanges} value={creds.last_name}/>
             </FormGroup>
-            <Button>Submit</Button>
+            <Button type='submit'>Submit</Button>
         </Form>
     )
 }
