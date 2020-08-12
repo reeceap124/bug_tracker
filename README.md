@@ -1,5 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+The issue/bug tracker tool is designed to allow users to log problems found on a project. Users may be a part of numerous different organizations and projects, but still be able to log and track issues in one centralized location.
+
+The backend for this project has not been deployed yet. Clone and run bug_tracker_be to have a working server. Instructions for this can be found in the bug_tracker_be ReadMe.md file.
+
+Further documentation for this project will be added as the application continues to be built out.
+
 ## Available Scripts
 
 In the project directory, you can run:

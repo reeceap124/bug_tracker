@@ -78,7 +78,7 @@ const Register = (props) => {
                 <Label for='lName'>Last Name</Label>
                 <Input type='text' name='lName' id='lName' placeholder='(optional)' onChange={handleChanges} value={creds.last_name}/>
             </FormGroup>
-            <Button>Submit</Button>
+            <Button type='submit'>Submit</Button>
         </Form>
     )
 }

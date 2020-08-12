@@ -8,7 +8,7 @@ const Dash = (props) => {
     const [filtered, setFiltered] = useState([])
     const [filters, setFilters] = useState({})
     useEffect(()=>{
-        axiosAuth().get(`/issues/${props.match.params}`)
+        axiosAuth().get(`/issues/${props.match.params.id}`)
         .then(res => {
             if (res.data.error && res.data.message) {
                 return console.error(res.data)
@@ -75,6 +75,7 @@ const Dash = (props) => {
             
             <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
+            
         </div>
         
     )

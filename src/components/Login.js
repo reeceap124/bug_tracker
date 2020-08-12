@@ -37,7 +37,7 @@ const Login = (props) => {
     }
 
     return (
-        <Form className='authForm'>
+        <Form className='authForm' onSubmit={login}>
             <h2>Login</h2>
             {message?<p>{message}</p>:null}
             <FormGroup>
@@ -48,7 +48,7 @@ const Login = (props) => {
                 <Label for='password'>Password</Label>
                 <Input type='password' name='password' id='password' placeholder='Enter Password' onChange={handleChanges} value={creds.password}/>
             </FormGroup>
-            <Button onClick={login}>Submit</Button>
+            <Button type='submit'>Submit</Button>
         </Form>
     )
 }
