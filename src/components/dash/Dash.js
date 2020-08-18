@@ -3,6 +3,7 @@ import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
 import OrgModal from './modals/OrgModal';
+import ProjectModal from './modals/ProjectModal'
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([])
@@ -12,10 +13,11 @@ const Dash = (props) => {
         axiosAuth().get(`/issues/${props.match.params.id}`)
         .then(res => {
             if (res.data.error && res.data.message) {
-                return console.error(res.data)
+                return console.error('got em', res.data)
             }
             setIssues(res.data)
             setFiltered(res.data)
+            console.log("Filtered", filtered)
         })
         .catch(()=>{
             console.log('There was an issue retrieving your issues')
@@ -75,7 +77,8 @@ const Dash = (props) => {
         <div className='dashWrapper'>
             <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
-            <OrgModal/>
+            <OrgModal id={props.match.params.id}/>
+            <ProjectModal id={props.match.params.id}/>
         </div>
         
     )

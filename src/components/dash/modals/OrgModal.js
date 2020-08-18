@@ -21,6 +21,13 @@ const OrgModal = (props) => {
         axiosAuth()[requestType](`orgs/${requestType==='post'?'':org.id}`,  org)
         .then((res)=>{
             console.log('added issue', res)
+            axiosAuth().post(`/users/orgRole/${props.id}`, {user_key: props.id, role_key: 1, org_key: res.data.id})
+            .then(()=>{
+                console.log('Added to orgRoles')
+            })
+            .catch(err=>{
+                console.log('failed to add to orgRoles', err)
+            })
         })
         .catch(err=>{
             console.error("There was an issue submitting this issue", err)
