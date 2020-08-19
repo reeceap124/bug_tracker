@@ -4,6 +4,7 @@ import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
 import OrgModal from './modals/OrgModal';
 import ProjectModal from './modals/ProjectModal'
+import IssueModal from './modals/IssueModal'
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([])
@@ -79,6 +80,7 @@ const Dash = (props) => {
             <IssueList list={filtered}/>
             <OrgModal id={props.match.params.id}/>
             <ProjectModal id={props.match.params.id}/>
+            <IssueModal id={props.match.params.id}/>
         </div>
         
     )
