@@ -14,7 +14,6 @@ const OrgModal = (props) => {
     useEffect(()=>{
         axiosAuth().get(`/users/orgRole/${props.id}`)
         .then(res=>{
-            console.log('RES:', res)
             setOrgs(res.data)
         })
         .catch((err)=>{
@@ -69,7 +68,7 @@ const OrgModal = (props) => {
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
                             <Input type='select' name='org_key' onChange={handleChanges} value={project.org_key}>
-                                <option selected disabled value={null}> *** Select One ***</option>
+                                <option defaultValue disabled value={null}> *** Select One ***</option>
                                 {/* get a set of orgs */}
                                 {orgs.map(org=>{
                                     return (<option value={org.oId}>{org.oTitle}</option>)
