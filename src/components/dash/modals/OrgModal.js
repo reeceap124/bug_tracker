@@ -11,9 +11,12 @@ const OrgModal = (props) => {
     if (props.updateOrg) {
         setOrg(props.updateOrg)
     }
-    const [isOpen, setIsOpen] = useState(false)
-    const toggle = () => {
-        setIsOpen(!isOpen)
+    const toggle = (nextModal = null) => {
+        if (props.modal === 'org') {
+            props.setModal(nextModal)
+        } else {
+            props.setModal('org')
+        }
     }
 
     const handleSubmit = (e) => {
@@ -21,6 +24,8 @@ const OrgModal = (props) => {
         axiosAuth()[requestType](`orgs/${requestType==='post'?'':org.id}`,  org)
         .then((res)=>{
             console.log('added issue', res)
+
+            //need to update to handle put requests as well
             axiosAuth().post(`/users/orgRole/${props.id}`, {user_key: props.id, role_key: 1, org_key: res.data.id})
             .then(()=>{
                 console.log('Added to orgRoles')
@@ -34,6 +39,8 @@ const OrgModal = (props) => {
         })
         .finally(()=>{
             toggle()
+            console.log('clicked')
+            props.goToModal('project')
             setOrg({
                 title:'',
                 description: ''
@@ -50,8 +57,8 @@ const OrgModal = (props) => {
 
     return (
         <div>
-            <Button onClick={toggle}>Org</Button>
-            <Modal isOpen={isOpen} toggle={toggle}>
+            {props.goalButton('org', toggle)}
+            <Modal isOpen={props.modal === 'org'} toggle={toggle}>
                 <ModalHeader>About Your Organization</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={handleSubmit}>

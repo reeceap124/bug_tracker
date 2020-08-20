@@ -24,7 +24,7 @@ const IssueModal = (props) => {
         .catch(err=>{
             console.log("Didn't get those orgRoles for you.", err)
         })
-    }, [])
+    }, [props.modal])
 
     const getProjects = (id) => {
         axiosAuth().get(`/projects/${id}`)
@@ -34,8 +34,13 @@ const IssueModal = (props) => {
         .catch(err=>console.log('didn get those projects', err))
     }
 
-    const [isOpen, setIsOpen] = useState(false)
-    const toggle = () => setIsOpen(!isOpen)
+    const toggle = (nextModal = null) => {
+        if (props.modal === 'issue') {
+            props.setModal(nextModal)
+        } else {
+            props.setModal('issue')
+        }
+    }
 
     const handleChanges =  e => {
         e.preventDefault();
@@ -59,29 +64,41 @@ const IssueModal = (props) => {
     
     return (
         <div>
-            <Button onClick={toggle}>Issue</Button>
-            <Modal isOpen={isOpen} toggle={toggle}>
+            {props.goalButton('issue', toggle)}
+            <Modal isOpen={props.modal === 'issue'} toggle={toggle}>
                 <ModalHeader>Create New Issue</ModalHeader>
                 <ModalBody>
                     <Label>Organization</Label>
                     <Input type='select' onChange={(e)=>{
+                        if (e.target.value === 'addOrg') {
+                            toggle()
+                            return (props.goToModal('org'))
+                        }  
                         getProjects(e.target.value)
                         }}>
                             <option selected disabled value={null}> *** Select One ***</option>
                             {orgs.map(org=>{
                                 return(<option value={org.oId}>{org.oTitle}</option>)
                             })}
+                            <option value='addOrg'>* Add New *</option>
                     </Input>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
                             <Label for='project_key'>Project</Label>
-                            <Input type='select' name='project_key' onChange={handleChanges} value={issue.project_key}>
+                            <Input type='select' name='project_key' onChange={(e)=>{
+                                if (e.target.value === 'addProject') {
+                                    toggle()
+                                    return (props.goToModal('project'))
+                                }
+                                handleChanges(e)    
+                            }} value={issue.project_key}>
                                 <option selected disabled value={null}>*** Select One ***</option>
                                 {projects.map(project=>{
                                     return (
                                         <option value={project.id}>{project.title}</option>
                                     )
                                 })}
+                                <option value='addProject'>* Add New *</option>
                             </Input>
                         </FormGroup>
                         <FormGroup>
@@ -108,7 +125,7 @@ const IssueModal = (props) => {
                             </Input>
                         </FormGroup>
                         
-                        <Button>{requestType?'Create':'Update'}</Button>
+                        <Button type='submit'>Submit</Button>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
