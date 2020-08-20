@@ -14,7 +14,6 @@ const OrgModal = (props) => {
     useEffect(()=>{
         axiosAuth().get(`/users/orgRole/${props.id}`)
         .then(res=>{
-            console.log('STAAAAAHHHHHPPPPPPPP')
             setOrgs(res.data)
         })
         .catch((err)=>{
@@ -67,7 +66,7 @@ const OrgModal = (props) => {
     return (
         <div>
             {props.goalButton('project', toggle)}
-            <Modal isOpen={props.modal === 'project'} toggle={toggle}>
+            <Modal isOpen={props.modal === 'project'} toggle={props.cancelCreation}>
                 <ModalHeader>About Your Project</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={handleSubmit}>
@@ -100,7 +99,7 @@ const OrgModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={()=>{
-                        toggle()
+                        props.cancelCreation()
                         setProject({title:'',description:'', active: true, org_key: null})
                     }}>Cancel</Button>
                 </ModalFooter>

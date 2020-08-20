@@ -23,23 +23,22 @@ const OrgModal = (props) => {
         e.preventDefault()
         axiosAuth()[requestType](`orgs/${requestType==='post'?'':org.id}`,  org)
         .then((res)=>{
-            console.log('added issue', res)
-
+            console.log('added org')
             //need to update to handle put requests as well
             axiosAuth().post(`/users/orgRole/${props.id}`, {user_key: props.id, role_key: 1, org_key: res.data.id})
-            .then(()=>{
-                console.log('Added to orgRoles')
+            .then((r)=>{
+                console.log('Added to orgRoles', res)
             })
             .catch(err=>{
                 console.log('failed to add to orgRoles', err)
             })
+            return res.data
         })
         .catch(err=>{
             console.error("There was an issue submitting this issue", err)
         })
         .finally(()=>{
             toggle()
-            console.log('clicked')
             props.goToModal('project')
             setOrg({
                 title:'',
@@ -58,7 +57,7 @@ const OrgModal = (props) => {
     return (
         <div>
             {props.goalButton('org', toggle)}
-            <Modal isOpen={props.modal === 'org'} toggle={toggle}>
+            <Modal isOpen={props.modal === 'org'} toggle={props.cancelCreation}>
                 <ModalHeader>About Your Organization</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={handleSubmit}>
@@ -75,7 +74,7 @@ const OrgModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={()=>{
-                        toggle()
+                        props.cancelCreation()
                         setOrg({title:'',description:''})
                     }}>Cancel</Button>
                 </ModalFooter>

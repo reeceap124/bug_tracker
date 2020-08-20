@@ -9,6 +9,7 @@ const ModalSelect = (props) => {
     const [goal, setGoal] = useState(null)
     const [modal, setModal] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
+    const [created, setCreated] = useState({org: null, project: null})
 
     const goalButton = (textStr, goalStr, toggle ) => {
         if (goal === null) {
@@ -25,11 +26,21 @@ const ModalSelect = (props) => {
             setModal(nextModal)
         }
     }
+
+    const updatedCreated = (update) => {
+        setCreated(update)
+    }
+
+    const cancelCreation = () => {
+        setGoal(null)
+        setModal(null)
+        setCreated({org:null, project:null})
+    }
     return (
         <>
-        <IssueModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal}/>
-        <ProjectModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal}/>
-        <OrgModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal}/>
+        <IssueModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
+        <ProjectModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
+        <OrgModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
         </>
     )
 }

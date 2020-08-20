@@ -65,7 +65,7 @@ const IssueModal = (props) => {
     return (
         <div>
             {props.goalButton('issue', toggle)}
-            <Modal isOpen={props.modal === 'issue'} toggle={toggle}>
+            <Modal isOpen={props.modal === 'issue'} toggle={props.cancelCreation}>
                 <ModalHeader>Create New Issue</ModalHeader>
                 <ModalBody>
                     <Label>Organization</Label>
@@ -129,7 +129,7 @@ const IssueModal = (props) => {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button onClick={toggle}>Cancel</Button>
+                    <Button onClick={props.cancelCreation}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>
