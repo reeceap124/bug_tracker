@@ -11,29 +11,35 @@ const OrgModal = (props) => {
     if (props.updateOrg) {
         setOrg(props.updateOrg)
     }
-    const [isOpen, setIsOpen] = useState(false)
-    const toggle = () => {
-        setIsOpen(!isOpen)
+    const toggle = (nextModal = null) => {
+        if (props.modal === 'org') {
+            props.setModal(nextModal)
+        } else {
+            props.setModal('org')
+        }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         axiosAuth()[requestType](`orgs/${requestType==='post'?'':org.id}`,  org)
         .then((res)=>{
-            console.log('added issue', res)
+            console.log('added org')
+            //need to update to handle put requests as well
             axiosAuth().post(`/users/orgRole/${props.id}`, {user_key: props.id, role_key: 1, org_key: res.data.id})
-            .then(()=>{
-                console.log('Added to orgRoles')
+            .then((r)=>{
+                console.log('Added to orgRoles', res)
             })
             .catch(err=>{
                 console.log('failed to add to orgRoles', err)
             })
+            return res.data
         })
         .catch(err=>{
             console.error("There was an issue submitting this issue", err)
         })
         .finally(()=>{
             toggle()
+            props.goToModal('project')
             setOrg({
                 title:'',
                 description: ''
@@ -50,8 +56,8 @@ const OrgModal = (props) => {
 
     return (
         <div>
-            <Button onClick={toggle}>Org</Button>
-            <Modal isOpen={isOpen} toggle={toggle}>
+            {props.goalButton('org', toggle)}
+            <Modal isOpen={props.modal === 'org'} toggle={props.cancelCreation}>
                 <ModalHeader>About Your Organization</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={handleSubmit}>
@@ -68,7 +74,7 @@ const OrgModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={()=>{
-                        toggle()
+                        props.cancelCreation()
                         setOrg({title:'',description:''})
                     }}>Cancel</Button>
                 </ModalFooter>

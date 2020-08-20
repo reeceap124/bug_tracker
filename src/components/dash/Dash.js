@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
-import OrgModal from './modals/OrgModal';
 import ProjectModal from './modals/ProjectModal'
 import IssueModal from './modals/IssueModal'
+import ModalSelect from './modals/ModalSelect'
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([])
@@ -18,7 +18,6 @@ const Dash = (props) => {
             }
             setIssues(res.data)
             setFiltered(res.data)
-            console.log("Filtered", filtered)
         })
         .catch(()=>{
             console.log('There was an issue retrieving your issues')
@@ -78,9 +77,10 @@ const Dash = (props) => {
         <div className='dashWrapper'>
             <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered}/>
-            <OrgModal id={props.match.params.id}/>
-            <ProjectModal id={props.match.params.id}/>
-            <IssueModal id={props.match.params.id}/>
+            {/* <OrgModal id={props.match.params.id}/> */}
+            <ModalSelect id={props.match.params.id}/>
+            {/* <ProjectModal id={props.match.params.id}/> */}
+            {/* <IssueModal id={props.match.params.id}/> */}
         </div>
         
     )

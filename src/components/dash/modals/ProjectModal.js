@@ -19,14 +19,17 @@ const OrgModal = (props) => {
         .catch((err)=>{
             console.log("Didn't get those orgRoles for you. ", err)
         })
-    }, [])
+    }, [props.modal])
 
     if (props.updateProject) {
         setProject(props.updateProject)
     }
-    const [isOpen, setIsOpen] = useState(false)
-    const toggle = () => {
-        setIsOpen(!isOpen)
+    const toggle = (nextModal = null) => {
+        if (props.modal === 'project') {
+            props.setModal(nextModal)
+        } else {
+            props.setModal('project')
+        }
     }
 
     const handleSubmit = (e) => {
@@ -43,6 +46,7 @@ const OrgModal = (props) => {
         })
         .finally(()=>{
             toggle()
+            props.goToModal('issue')
             setProject({
                 title:'',
                 description: '',
@@ -61,18 +65,25 @@ const OrgModal = (props) => {
 
     return (
         <div>
-            <Button onClick={toggle}>Project</Button>
-            <Modal isOpen={isOpen} toggle={toggle}>
-                <ModalHeader>About Your Organization</ModalHeader>
+            {props.goalButton('project', toggle)}
+            <Modal isOpen={props.modal === 'project'} toggle={props.cancelCreation}>
+                <ModalHeader>About Your Project</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Input type='select' name='org_key' onChange={handleChanges} value={project.org_key}>
-                                <option defaultValue disabled value={null}> *** Select One ***</option>
+                            <Input type='select' name='org_key' onChange={(e)=>{
+                                if(e.target.value === 'addOrg') {
+                                    toggle()
+                                    return (props.goToModal('org'))
+                                }
+                                handleChanges(e)
+                            }} value={project.org_key}>
+                                <option selected disabled value={null}> *** Select One ***</option>
                                 {/* get a set of orgs */}
                                 {orgs.map(org=>{
                                     return (<option value={org.oId}>{org.oTitle}</option>)
                                 })}
+                                <option value='addOrg'>* Add New *</option>
                             </Input>
                         </FormGroup>
                         <FormGroup>
@@ -88,7 +99,7 @@ const OrgModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={()=>{
-                        toggle()
+                        props.cancelCreation()
                         setProject({title:'',description:'', active: true, org_key: null})
                     }}>Cancel</Button>
                 </ModalFooter>
