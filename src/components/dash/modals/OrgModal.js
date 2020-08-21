@@ -23,16 +23,16 @@ const OrgModal = (props) => {
         e.preventDefault()
         axiosAuth()[requestType](`orgs/${requestType==='post'?'':org.id}`,  org)
         .then((res)=>{
-            console.log('added org')
+            console.log('added org',res.data)
+            props.updateCreated({org:res.data.id, project:null})
             //need to update to handle put requests as well
             axiosAuth().post(`/users/orgRole/${props.id}`, {user_key: props.id, role_key: 1, org_key: res.data.id})
-            .then((r)=>{
-                console.log('Added to orgRoles', res)
+            .then(()=>{
+                console.log('Added to orgRoles')
             })
             .catch(err=>{
                 console.log('failed to add to orgRoles', err)
             })
-            return res.data
         })
         .catch(err=>{
             console.error("There was an issue submitting this issue", err)

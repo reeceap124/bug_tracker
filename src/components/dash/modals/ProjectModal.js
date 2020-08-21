@@ -12,6 +12,7 @@ const OrgModal = (props) => {
         org_key: null
     })
     useEffect(()=>{
+        setProject({...project, org_key: props.created.org})
         axiosAuth().get(`/users/orgRole/${props.id}`)
         .then(res=>{
             setOrgs(res.data)
@@ -40,6 +41,7 @@ const OrgModal = (props) => {
         axiosAuth()[requestType](`/projects/${project.org_key}`,  project)
         .then((res)=>{
             console.log('added project', res)
+            props.updateCreated({org:project.org_key, project:res.data.id})
         })
         .catch(err=>{
             console.error("There was an issue submitting this issue", err)
