@@ -27,7 +27,7 @@ const ModalSelect = (props) => {
         }
     }
 
-    const updatedCreated = (update) => {
+    const updateCreated = (update) => {
         setCreated(update)
     }
 
@@ -40,7 +40,7 @@ const ModalSelect = (props) => {
         <>
         <IssueModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
         <ProjectModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
-        <OrgModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
+        <OrgModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation} updateCreated={updateCreated}/>
         </>
     )
 }

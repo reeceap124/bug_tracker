@@ -17,6 +17,7 @@ const IssueModal = (props) => {
     })
 
     useEffect(()=>{
+        setIssue({...issue, project_key: props.created.project})
         axiosAuth().get(`/users/orgRole/${props.id}`)
         .then(res=>{
             setOrgs(res.data)
