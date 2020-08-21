@@ -5,6 +5,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Lab
 const IssueModal = (props) => {
     const [requestType, setRequestType] = useState('post')
     const [orgs, setOrgs] = useState([])
+    const [currentOrg, setCurrentOrg] = useState()
     const [projects, setProjects] = useState([])
     const [issue, setIssue] = useState({
         title : '', 
@@ -15,9 +16,7 @@ const IssueModal = (props) => {
         created_by: props.id //integer
         //need an updated at. may be able to write update EP to set this on the BE
     })
-
     useEffect(()=>{
-        setIssue({...issue, project_key: props.created.project})
         axiosAuth().get(`/users/orgRole/${props.id}`)
         .then(res=>{
             setOrgs(res.data)
@@ -25,15 +24,39 @@ const IssueModal = (props) => {
         .catch(err=>{
             console.log("Didn't get those orgRoles for you.", err)
         })
+        .finally(()=>{
+            if (props.created.org !== null) {
+                setCurrentOrg(props.created.org)
+            }
+        })
     }, [props.modal])
-
-    const getProjects = (id) => {
-        axiosAuth().get(`/projects/${id}`)
+    useEffect(()=>{
+        if(!currentOrg){return}
+        axiosAuth().get(`/projects/${currentOrg}`)
         .then(res=>{
             setProjects(res.data)
         })
+        .then(()=>{
+            setIssue({...issue, project_key: props.created.project})
+        })
         .catch(err=>console.log('didn get those projects', err))
-    }
+    }, [props.modal, currentOrg])
+    // useEffect(()=>{
+    //     getProjects(currentOrg)
+    // }, [currentOrg])
+
+    // const getProjects = (id) => {
+    //     axiosAuth().get(`/projects/${id}`)
+    //     .then(res=>{
+    //         setProjects(res.data)
+    //     })
+    //     .then(()=>{
+    //         if(props.created.project in projects) {
+    //             setIssue({...issue, project_key: props.create.project})
+    //         }
+    //     })
+    //     .catch(err=>console.log('didn get those projects', err))
+    // }
 
     const toggle = (nextModal = null) => {
         if (props.modal === 'issue') {
@@ -74,10 +97,10 @@ const IssueModal = (props) => {
                         if (e.target.value === 'addOrg') {
                             toggle()
                             return (props.goToModal('org'))
-                        }  
-                        getProjects(e.target.value)
-                        }}>
-                            <option selected disabled value={null}> *** Select One ***</option>
+                        }
+                        setCurrentOrg(e.target.value)
+                        }} value={currentOrg}>
+                            <option disabled value=''> *** Select One ***</option>
                             {orgs.map(org=>{
                                 return(<option value={org.oId}>{org.oTitle}</option>)
                             })}
