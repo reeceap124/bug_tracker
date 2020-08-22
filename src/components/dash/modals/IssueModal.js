@@ -5,7 +5,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Lab
 const IssueModal = (props) => {
     const [requestType, setRequestType] = useState('post')
     const [orgs, setOrgs] = useState([])
-    const [currentOrg, setCurrentOrg] = useState()
+    const [currentOrg, setCurrentOrg] = useState('')
     const [projects, setProjects] = useState([])
     const [issue, setIssue] = useState({
         title : '', 
@@ -76,13 +76,26 @@ const IssueModal = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(issue)
         axiosAuth()[requestType](`issues/${issue.project_key}`, issue)
         .then((res)=>{
             console.log('added issue', res)
         })
         .catch(err=>{
             return console.error("There was an issue submitting this issue", err)
+        })
+        .finally(()=>{
+            toggle()
+            props.goToModal()
+            props.cancelCreation()
+            setIssue({
+                title : '', 
+                content : '',
+                open : true,
+                importance : null,
+                project_key : null,
+                created_by: props.id
+            })
+
         })
     }
     

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios'
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import {Link} from 'react-router-dom'
 
 const Register = (props) => {
     const [message, setMessage] = useState(null)
@@ -32,7 +33,8 @@ const Register = (props) => {
             last_name: creds.last_name
         })
         .then(res=>{
-            props.history.push(`/dash/${res.data.id}`)
+            localStorage.setItem('token', res.data.token)
+            props.history.push(`/dash/${res.data.user.id}`)
         })
         .catch(err=>{
             setMessage('Registration Error')
@@ -51,6 +53,7 @@ const Register = (props) => {
         })
     }
     return (
+        <>
         <Form className='authForm' onSubmit={register}>
             <h2>Sign up</h2>
             {message?<p>{message}</p>:null}
@@ -79,7 +82,11 @@ const Register = (props) => {
                 <Input type='text' name='lName' id='lName' placeholder='(optional)' onChange={handleChanges} value={creds.last_name}/>
             </FormGroup>
             <Button type='submit'>Submit</Button>
+            <p>Already a Registered? <Link to='/login'>Login</Link></p>
+            
         </Form>
+        
+        </>
     )
 }
 
