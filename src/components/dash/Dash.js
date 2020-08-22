@@ -49,6 +49,11 @@ const Dash = (props) => {
         })
         return updated
     }
+
+    useEffect(()=>{
+        console.log('updating filtered')
+        updateFilteredIssues()
+    }, [issues])
     
     const onFilterClick = async (arr) => {  // arr = [filter, value]
         const filter = arr[0]
