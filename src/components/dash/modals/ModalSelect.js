@@ -30,7 +30,7 @@ const ModalSelect = (props) => {
     const updateCreated = (update) => {
         setCreated(update)
     }
-    console.log("CREATED:", created)
+    
     const cancelCreation = () => {
         setGoal(null)
         setModal(null)
