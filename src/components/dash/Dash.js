@@ -2,14 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
-import ProjectModal from './modals/ProjectModal'
-import IssueModal from './modals/IssueModal'
 import ModalSelect from './modals/ModalSelect'
 
 const Dash = (props) => {
-    const [issues, setIssues] = useState([])
-    const [filtered, setFiltered] = useState([])
-    const [filters, setFilters] = useState({})
+    const [issues, setIssues] = useState([]) //The full list of issues that user is tied to
+    const [filtered, setFiltered] = useState([]) // The filtered list of issues to be displayed in the issue list
+    const [filters, setFilters] = useState({}) //Table where keys are filters to be applied (matching the keys on issue objects), and values are used to determine which issues are filtered by that filter key.
     useEffect(()=>{
         axiosAuth().get(`/issues/${props.match.params.id}`)
         .then(res => {
@@ -49,11 +47,6 @@ const Dash = (props) => {
         })
         return updated
     }
-
-    useEffect(()=>{
-        console.log('updating filtered')
-        updateFilteredIssues()
-    }, [issues])
     
     const onFilterClick = async (arr) => {  // arr = [filter, value]
         const filter = arr[0]
