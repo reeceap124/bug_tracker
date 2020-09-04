@@ -11,21 +11,26 @@ const IssueDetail = (props) => {
                 setIssue(res.data)
             })
             .then(()=>{
-                axiosAuth().get(`/comments`)
+                axiosAuth().get(`/comments/list/${props.activeIssue}`)
+                .then(res=>{
+                    setComments(res.data)
+                })
+                .catch(err=>console.log('There was an error getting your comments', err))
             })
+            .catch(err=>console.error('Trouble getting issue', err))
         }
         
     }, [props.activeIssue])
 
     if (issue) {
         return (
-            <>
+            <div>
             <h2>Title: {issue.title}</h2>
             <div>
                 <h3>Contents:</h3>
                 <p>{issue.content}</p>
             </div>
-            </>
+            </div>
         )
     } else {return null}
 }

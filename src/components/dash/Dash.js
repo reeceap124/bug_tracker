@@ -78,8 +78,9 @@ const Dash = (props) => {
         <div className='dashWrapper'>
             <Filters issues={issues} updateFiltered={onFilterClick}/>
             <IssueList list={filtered} setActiveIssue={setActiveIssue}/>
-            <ModalSelect id={props.match.params.id}/>
             <IssueDetail activeIssue={activeIssue}/>
+            <ModalSelect id={props.match.params.id}/>
+            
         </div>
         
     )

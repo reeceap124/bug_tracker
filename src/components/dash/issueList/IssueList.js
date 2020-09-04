@@ -3,7 +3,6 @@ import IssueCard from './IssueCard'
 
 const IssueList = (props) => {
     function cardClick(issueId) {
-        console.log('clickedCard')
         props.setActiveIssue(issueId)
     }
     return (
