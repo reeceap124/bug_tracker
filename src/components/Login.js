@@ -3,11 +3,12 @@ import axios from 'axios';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const Login = (props) => {
-    const [message, setMessage] = useState(null);
-    const [creds, setCreds] = useState({
+    const [message, setMessage] = useState(null); //For displaying any issues logging in
+    const [creds, setCreds] = useState({ //user credentials passed into login form
         email: '',
         password: ''
     })
+    //updates creds state to match the form
     const handleChanges = e => {
         e.preventDefault()
         setCreds({
@@ -15,12 +16,16 @@ const Login = (props) => {
             [e.target.name]: e.target.value
         })
     }
+    //Submits login credentials to API endpoint
+    //Returns token and user data, and pushes to users dashboard
     const login = e => {
         e.preventDefault()
+        setMessage('Logging In...')
         axios.post('http://localhost:3300/api/auth/login', creds)
         .then(res=>{
+            setMessage('Login Success')
             localStorage.setItem('token', res.data.token)
-            props.history.push(`/dash/${res.data.user.id}`)
+            props.history.push(`/dash/${res.data.user.id}`) 
         })
         .catch(err=>{
             setMessage('Login Error')

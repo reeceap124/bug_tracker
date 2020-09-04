@@ -1,11 +1,18 @@
 import React from 'react';
+import {Card, CardHeader, CardText, CardBody, CardTitle} from 'reactstrap'
 
-const IssueCard = ({issue}) => {
+const IssueCard = ({issue, cardClick}) => {
     return (
-        <div>
-            <h4>{issue.title}</h4>
-            <p>{issue.content}</p>
-        </div>
+        <Card onClick={()=>cardClick(issue.id)}>
+            <CardHeader tag='h3'>
+                {issue.title}
+            </CardHeader>
+            
+            <CardBody>
+                <CardText>{issue.content}</CardText>
+            </CardBody>
+            
+        </Card>
     )
 }
 
