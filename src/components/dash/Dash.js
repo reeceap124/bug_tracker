@@ -3,13 +3,15 @@ import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
 import ModalSelect from './modals/ModalSelect'
+import IssueDetail from './issueDetail/IssueDetail';
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([]) //The full list of issues that user is tied to
     const [filtered, setFiltered] = useState([]) // The filtered list of issues to be displayed in the issue list
     const [filters, setFilters] = useState({}) //Table where keys are filters to be applied (matching the keys on issue objects), and values are used to determine which issues are filtered by that filter key.
+    const [activeIssue, setActiveIssue] = useState(null)
     useEffect(()=>{
-        axiosAuth().get(`/issues/${props.match.params.id}`)
+        axiosAuth().get(`/issues/list/${props.match.params.id}`)
         .then(res => {
             if (res.data.error && res.data.message) {
                 return console.error('got em', res.data)
@@ -22,6 +24,7 @@ const Dash = (props) => {
         })
     }, [])
 
+    
     //Used in onFilterClick to clean up the filters update
     const updateFilters = (filters, filter, val, del = false) => {
         if (del) {
@@ -74,11 +77,9 @@ const Dash = (props) => {
     return (
         <div className='dashWrapper'>
             <Filters issues={issues} updateFiltered={onFilterClick}/>
-            <IssueList list={filtered}/>
-            {/* <OrgModal id={props.match.params.id}/> */}
+            <IssueList list={filtered} setActiveIssue={setActiveIssue}/>
             <ModalSelect id={props.match.params.id}/>
-            {/* <ProjectModal id={props.match.params.id}/> */}
-            {/* <IssueModal id={props.match.params.id}/> */}
+            <IssueDetail activeIssue={activeIssue}/>
         </div>
         
     )
