@@ -4,6 +4,8 @@ import { axiosAuth } from '../../../util/axiosAuth'
 const IssueDetail = (props) => {
     const [issue, setIssue] = useState(null)
     const [comments, setComments] = useState([])
+    //Retrieves data about specific issue
+    //TODO: clean it up by just setting current issue to the clicked issue. No need to do a HTTP request.
     useEffect(()=>{
         if (props.activeIssue){
             axiosAuth().get(`/issues/specific/${props.activeIssue}`)
