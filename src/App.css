@@ -9,8 +9,12 @@
 .dashWrapper {
   display: flex;
   justify-content: space-around;
-  max-width: 50%;
+  max-width: 80%;
   margin: auto;
 
+}
+
+.modalSelect {
+  display: flex;
 }
 

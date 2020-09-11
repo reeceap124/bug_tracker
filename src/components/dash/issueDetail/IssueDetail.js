@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import CommentsList from './CommentsList'
 import { axiosAuth } from '../../../util/axiosAuth'
 
 const IssueDetail = (props) => {
@@ -32,7 +33,9 @@ const IssueDetail = (props) => {
                 <h3>Contents:</h3>
                 <p>{issue.content}</p>
             </div>
+            <CommentsList issueId={props.activeIssue} match={props.match}/>
             </div>
+            
         )
     } else {return null}
 }

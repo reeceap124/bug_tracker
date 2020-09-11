@@ -9,7 +9,7 @@ const Dash = (props) => {
     const [issues, setIssues] = useState([]) //The full list of issues that user is tied to
     const [filtered, setFiltered] = useState([]) // The filtered list of issues to be displayed in the issue list
     const [filters, setFilters] = useState({}) //Table where keys are filters to be applied (matching the keys on issue objects), and values are used to determine which issues are filtered by that filter key.
-    const [activeIssue, setActiveIssue] = useState(null)
+    const [activeIssue, setActiveIssue] = useState(null) //When set, holds the id of the active Issue that is displayed in issue details.
     useEffect(()=>{
         axiosAuth().get(`/issues/list/${props.match.params.id}`)
         .then(res => {
@@ -77,9 +77,9 @@ const Dash = (props) => {
     return (
         <div className='dashWrapper'>
             <Filters issues={issues} updateFiltered={onFilterClick}/>
-            <IssueList list={filtered} setActiveIssue={setActiveIssue}/>
-            <IssueDetail activeIssue={activeIssue}/>
-            <ModalSelect id={props.match.params.id}/>
+            <IssueList list={filtered} setActiveIssue={setActiveIssue} id={props.match.params.id}/>
+            <IssueDetail activeIssue={activeIssue} match={props.match}/>
+            {/* <ModalSelect id={props.match.params.id}/> */}
             
         </div>
         
