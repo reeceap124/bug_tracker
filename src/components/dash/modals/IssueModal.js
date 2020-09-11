@@ -76,7 +76,7 @@ const IssueModal = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axiosAuth()[requestType](`issues/${issue.project_key}`, issue)
+        axiosAuth()[requestType](`/issues/${issue.project_key}`, issue)
         .then((res)=>{
             console.log('added issue', res)
         })
