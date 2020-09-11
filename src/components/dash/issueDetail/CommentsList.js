@@ -17,7 +17,7 @@ const CommentsList = (props) => {
             setCommentList(res.data)
         })
         .catch(err=>console.error('didn get those comments', err))
-    }, [])
+    }, [props.issueId])
 
     function handleChanges(e){
         e.preventDefault()
