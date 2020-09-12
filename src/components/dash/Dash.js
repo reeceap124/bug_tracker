@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {axiosAuth} from '../../util/axiosAuth'
 import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
-import ModalSelect from './modals/ModalSelect'
 import IssueDetail from './issueDetail/IssueDetail';
+import {UserProvider} from '../../contexts/UserContext'
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([]) //The full list of issues that user is tied to
@@ -76,11 +76,11 @@ const Dash = (props) => {
     }
     return (
         <div className='dashWrapper'>
-            <Filters issues={issues} updateFiltered={onFilterClick}/>
-            <IssueList list={filtered} setActiveIssue={setActiveIssue} id={props.match.params.id}/>
-            <IssueDetail activeIssue={activeIssue} match={props.match}/>
-            {/* <ModalSelect id={props.match.params.id}/> */}
-            
+            <UserProvider user={props.match.params.id}>
+                <Filters issues={issues} updateFiltered={onFilterClick}/>
+                <IssueList list={filtered} setActiveIssue={setActiveIssue}/>
+                <IssueDetail activeIssue={activeIssue} match={props.match}/>
+            </UserProvider>
         </div>
         
     )

@@ -9,7 +9,7 @@ const IssueList = (props) => {
     return (
         <section>
             <div className='modalSelect'>
-                <ModalSelect id={props.id}/>
+                <ModalSelect/>
             </div>
             {props.list.map(issue=>{
                 return <IssueCard key={issue.id} issue={issue} cardClick={cardClick}/>
