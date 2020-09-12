@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
+import {useUser} from '../../../contexts/UserContext'
 import {axiosAuth} from '../../../util/axiosAuth'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap'
 
 const OrgModal = (props) => {
+    const id = useUser()
     const [requestType, setRequestType] = useState('post')
     const [org, setOrg] = useState({
         title: '',
@@ -26,7 +28,7 @@ const OrgModal = (props) => {
             console.log('added org',res.data)
             props.updateCreated({org:res.data.id, project:null})
             //need to update to handle put requests as well
-            axiosAuth().post(`/users/orgRole/${props.id}`, {user_key: props.id, role_key: 1, org_key: res.data.id})
+            axiosAuth().post(`/users/orgRole/${id}`, {user_key: id, role_key: 1, org_key: res.data.id})
             .then(()=>{
                 console.log('Added to orgRoles')
             })

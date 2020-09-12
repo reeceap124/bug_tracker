@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
+import {useUser} from '../../../contexts/UserContext'
 import {axiosAuth} from '../../../util/axiosAuth';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const IssueModal = (props) => {
+    const id = useUser()
     const [requestType, setRequestType] = useState('post')
     const [orgs, setOrgs] = useState([])
     const [currentOrg, setCurrentOrg] = useState('')
@@ -13,11 +15,11 @@ const IssueModal = (props) => {
         open : true,
         importance : null, //integer
         project_key : null, //integer
-        created_by: props.id //integer
+        created_by: id //integer
         //need an updated at. may be able to write update EP to set this on the BE
     })
     useEffect(()=>{
-        axiosAuth().get(`/users/orgRole/${props.id}`)
+        axiosAuth().get(`/users/orgRole/${id}`)
         .then(res=>{
             setOrgs(res.data)
         })
@@ -93,7 +95,7 @@ const IssueModal = (props) => {
                 open : true,
                 importance : null,
                 project_key : null,
-                created_by: props.id
+                created_by: id
             })
 
         })

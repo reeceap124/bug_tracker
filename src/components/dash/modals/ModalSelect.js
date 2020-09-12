@@ -38,9 +38,9 @@ const ModalSelect = (props) => {
     }
     return (
         <>
-        <IssueModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
-        <ProjectModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation} updateCreated={updateCreated}/>
-        <OrgModal id={props.id} modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation} updateCreated={updateCreated}/>
+        <IssueModal modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation}/>
+        <ProjectModal modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation} updateCreated={updateCreated}/>
+        <OrgModal modal={modal} setModal={setModal} goalButton={goalButton} goToModal={goToModal} created={created} cancelCreation={cancelCreation} updateCreated={updateCreated}/>
         </>
     )
 }

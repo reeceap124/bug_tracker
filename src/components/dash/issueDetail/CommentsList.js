@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react'
+import {useUser} from '../../../contexts/UserContext'
 import CommentCard from './CommentCard'
 import {axiosAuth} from '../../../util/axiosAuth'
 
 const CommentsList = (props) => {
+    const userId = useUser()
     const [commentList, setCommentList] = useState([])
     const [newComment, setNewComment] = useState({
         comment: '',
         issue_key: props.issueId,
-        created_by: props.match.params.id
+        created_by: userId
     })
     
     useEffect(()=>{

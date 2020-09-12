@@ -33,7 +33,7 @@ const IssueDetail = (props) => {
                 <h3>Contents:</h3>
                 <p>{issue.content}</p>
             </div>
-            <CommentsList issueId={props.activeIssue} match={props.match}/>
+            <CommentsList issueId={props.activeIssue}/>
             </div>
             
         )

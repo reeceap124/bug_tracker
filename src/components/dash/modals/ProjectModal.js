@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
+import {useUser} from '../../../contexts/UserContext'
 import {axiosAuth} from '../../../util/axiosAuth'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap'
 
 const OrgModal = (props) => {
+    const id = useUser()
     const [requestType, setRequestType] = useState('post')
     const [orgs, setOrgs] = useState([]);
     const [project, setProject] = useState({
@@ -13,7 +15,7 @@ const OrgModal = (props) => {
     })
     useEffect(()=>{
         setProject({...project, org_key: props.created.org})
-        axiosAuth().get(`/users/orgRole/${props.id}`)
+        axiosAuth().get(`/users/orgRole/${id}`)
         .then(res=>{
             setOrgs(res.data)
         })
