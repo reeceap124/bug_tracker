@@ -79,7 +79,7 @@ const Dash = (props) => {
             <UserProvider user={props.match.params.id}>
                 <Filters issues={issues} updateFiltered={onFilterClick}/>
                 <IssueList list={filtered} setActiveIssue={setActiveIssue}/>
-                <IssueDetail activeIssue={activeIssue} match={props.match}/>
+                <IssueDetail activeIssue={activeIssue} />
             </UserProvider>
         </div>
         
