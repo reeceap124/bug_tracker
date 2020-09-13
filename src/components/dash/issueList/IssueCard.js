@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardHeader, CardText, CardBody, CardTitle} from 'reactstrap'
+import {Card, CardHeader, CardText, CardBody} from 'reactstrap'
 
 const IssueCard = ({issue, cardClick}) => {
     return (

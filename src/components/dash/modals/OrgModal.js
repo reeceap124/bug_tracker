@@ -5,7 +5,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Lab
 
 const OrgModal = (props) => {
     const id = useUser()
-    const [requestType, setRequestType] = useState('post')
+    const [requestType] = useState('post')
     const [org, setOrg] = useState({
         title: '',
         description: ''

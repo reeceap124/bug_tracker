@@ -5,7 +5,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Lab
 
 const IssueModal = (props) => {
     const id = useUser()
-    const [requestType, setRequestType] = useState('post')
+    const [requestType] = useState('post')
     const [orgs, setOrgs] = useState([])
     const [currentOrg, setCurrentOrg] = useState('')
     const [projects, setProjects] = useState([])
@@ -117,7 +117,7 @@ const IssueModal = (props) => {
                         }} value={currentOrg}>
                             <option disabled value=''> *** Select One ***</option>
                             {orgs.map(org=>{
-                                return(<option value={org.oId}>{org.oTitle}</option>)
+                                return(<option key={`issueOrg_${org.oId}`}value={org.oId}>{org.oTitle}</option>)
                             })}
                             <option value='addOrg'>* Add New *</option>
                     </Input>
@@ -134,7 +134,7 @@ const IssueModal = (props) => {
                                 <option selected disabled value={null}>*** Select One ***</option>
                                 {projects.map(project=>{
                                     return (
-                                        <option value={project.id}>{project.title}</option>
+                                        <option key={`issueProject_${project.id}`} value={project.id}>{project.title}</option>
                                     )
                                 })}
                                 <option value='addProject'>* Add New *</option>

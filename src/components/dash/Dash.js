@@ -4,6 +4,7 @@ import Filters from './filters/Filters'
 import IssueList from './issueList/IssueList'
 import IssueDetail from './issueDetail/IssueDetail';
 import {UserProvider} from '../../contexts/UserContext'
+import {IssuesProvider} from '../../contexts/IssuesContext'
 
 const Dash = (props) => {
     const [issues, setIssues] = useState([]) //The full list of issues that user is tied to
@@ -22,7 +23,7 @@ const Dash = (props) => {
         .catch(()=>{
             console.log('There was an issue retrieving your issues')
         })
-    }, [])
+    }, [props.match.params.id])
 
     
     //Used in onFilterClick to clean up the filters update
@@ -77,9 +78,11 @@ const Dash = (props) => {
     return (
         <div className='dashWrapper'>
             <UserProvider user={props.match.params.id}>
+            <IssuesProvider issues={issues} filteredIssues={filtered} activeIssue={activeIssue}>
                 <Filters issues={issues} updateFiltered={onFilterClick}/>
                 <IssueList list={filtered} setActiveIssue={setActiveIssue}/>
-                <IssueDetail activeIssue={activeIssue} />
+                <IssueDetail activeIssue={activeIssue}/>
+            </IssuesProvider>
             </UserProvider>
         </div>
         
