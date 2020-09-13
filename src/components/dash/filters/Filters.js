@@ -15,10 +15,10 @@ const Filters = (props) => {
         return issues.map(issue=>{
             if(!(issue[filter] in table)) {
                 table[issue[filter]] = 1
-                return <Button key={`${issue.title}button`} outline color='secondary' onClick={(e)=>{
+                return <Button key={`${issue[filter]}_${issue.filter}_button`} outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
                     props.updateFiltered([filter, issue[filter]])
-                }}>{issue[filter]}</Button>
+                }}>{`${issue[filter]}`}</Button>
             }
             else {
                 table[issue[filter]] ++
@@ -45,8 +45,11 @@ const Filters = (props) => {
                 {getFilters('project', projects)}
             </div>
             <div>
-                <h3>Open</h3>
-                <p>All</p>
+                <h3>Active</h3>
+                <Button outline color='secondary' onClick={(e)=>{
+                    e.preventDefault()
+                    props.updateFiltered(['open', 'all'])
+                }}>All</Button>
                 {getFilters('open', active)}
             </div>
             <div>

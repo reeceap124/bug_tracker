@@ -8,7 +8,7 @@ import IssueModal from './IssueModal';
 const ModalSelect = (props) => {
     const [goal, setGoal] = useState(null)
     const [modal, setModal] = useState(null)
-    const [isOpen, setIsOpen] = useState(false)
+    // const [isOpen, setIsOpen] = useState(false)
     const [created, setCreated] = useState({org: null, project: null})
 
     const goalButton = (textStr, goalStr, toggle ) => {
