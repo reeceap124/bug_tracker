@@ -13,6 +13,7 @@ const OrgModal = (props) => {
         active: true,
         org_key: null
     })
+    
     useEffect(()=>{
         setProject({...project, org_key: props.created.org})
         axiosAuth().get(`/users/orgRole/${id}`)

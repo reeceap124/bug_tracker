@@ -17,6 +17,7 @@ const Dash = (props) => {
             if (res.data.error && res.data.message) {
                 return console.error('got em', res.data)
             }
+            //TODO: set up with context to allow update on submission
             setIssues(res.data)
             setFiltered(res.data)
         })
