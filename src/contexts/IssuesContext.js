@@ -16,6 +16,12 @@ export function IssuesProvider({issues, filteredIssues, activeIssue, children}) 
     function updateIssues(newIssuesList) {
         setIssuesList(newIssuesList)
     }
+    function updateFiltered(newFilteredList) {
+        setFilteredList(newFilteredList)
+    }
+    function updateActive(newActive) {
+        setActive(newActive)
+    }
     return (
         <IssuesContext.Provider value={{issues, filteredIssues, activeIssue}}>
             {children}
