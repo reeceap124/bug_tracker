@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useReducer} from 'react';
 const IssuesContext = createContext();
 export function useIssues() { //Custom hook for consuming context
     return useContext(IssuesContext)
@@ -9,21 +9,33 @@ export function useIssues() { //Custom hook for consuming context
     //active
 
 //Creates context that includes the full issue list, the filtered issues, and the active issue 
-export function IssuesProvider({issues, filteredIssues, activeIssue, children}) {
-    const [issuesList, setIssuesList] = useState(issues)
-    const [filteredList, setFilteredList] = useState(filteredIssues)
-    const [active, setActive] = 
-    function updateIssues(newIssuesList) {
-        setIssuesList(newIssuesList)
+const ACTIONS = {
+    updateIssues : 'updateIssues',
+    updateFiltered : 'updateFiltered',
+    updateActive : 'updateActive'
+}
+function reducer (state, action) {
+    switch(action.type) {
+        case ACTIONS.updateIssues:
+            return {...state, allIssues: action.payload}
+        case ACTIONS.updateFiltered:
+            return {...state, updateFiltered: action.payload}
+        case ACTIONS.updateActive:
+            return {...state, updateActive:action.payload}
     }
-    function updateFiltered(newFilteredList) {
-        setFilteredList(newFilteredList)
-    }
-    function updateActive(newActive) {
-        setActive(newActive)
+}
+export function IssuesProvider({children}) {
+
+    const [issuesState, dispatch] = useReducer(reducer, {
+        allIssues,
+        filteredIssues,
+        activeIssue
+    })
+    function update(actionType, payload){
+        dispatch({type: ACTIONS[actionType], payload: payload})
     }
     return (
-        <IssuesContext.Provider value={{issues, filteredIssues, activeIssue}}>
+        <IssuesContext.Provider value={{issues:issuesState.allIssues, filteredIssues:issuesState.filteredIssues, activeIssue:issuesState.filteredIssues, update}}>
             {children}
         </IssuesContext.Provider>
     )
