@@ -14,6 +14,7 @@ const ACTIONS = {
     updateFiltered : 'updateFiltered',
     updateActive : 'updateActive'
 }
+//Reducer for context
 function reducer (state, action) {
     switch(action.type) {
         case ACTIONS.updateIssues:
