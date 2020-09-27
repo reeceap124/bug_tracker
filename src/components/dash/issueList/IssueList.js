@@ -14,12 +14,16 @@ const IssueList = (props) => {
             if (res.data.error){
                 return console.error(res.data)
             }
+            issuesContext.update(issuesContext.issues, res.data)
             issuesContext.update(issuesContext.filtered, res.data)
         })
         .catch(err=>{
             console.error('There was an error fetching your issues', err)
         })
     }, [id])
+
+    updateFilter
+
     function cardClick(issueId) {
         props.setActiveIssue(issueId)
     }

@@ -1,18 +1,18 @@
 import React from 'react';
+import {useIssues} from '../../../contexts/IssuesContext'
 import { Button } from 'reactstrap'
 
-const Filters = (props) => {
-    const {issues} = props
+const Filters = () => {
+    const issuesContext = useIssues()
     //Objects allow for O(1) lookup for when checking if a filter has already been listed.
     let projects = {}
     let orgs = {}
     let roles = {}
     let importance = {}
     let active = {}
-    //Pass in filter string and the cache table to dynamically render filters.
-    //May incorporate into a <div> creator to dynamically create each section.
+    
     const getFilters = (filter, table) => {
-        return issues.map(issue=>{
+        return issuesContext.issues.map(issue=>{
             if(!(issue[filter] in table)) {
                 table[issue[filter]] = 1
                 return <Button key={`${issue[filter]}_${issue.filter}_button`} outline color='secondary' onClick={(e)=>{
