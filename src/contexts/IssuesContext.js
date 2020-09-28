@@ -10,12 +10,15 @@ export function IssuesProvider({children}) {
     const [filters, setFilters] = useState({}) //Table of filters used to get filtered list
     const [activeIssue, setActiveIssue] = useState() //Defines currently active issue
     useEffect(()=>{ //when filters change we re-evaluate the issues rendered in filtered list
+        //filters out issues to produce filtered issues list
         const updatedIssues = issues.filter(issue=>{
+            const returnable = true
             filters.forEach(filter=>{
-                if (issue[filter] === filters[filter]){
-                    //finish writing the check here, when back from dinner.
+                if (issue[filter] !== filters[filter]){
+                    returnable = false
                 }
             })
+            if(returnable){return issue}
         })
         setFiltered(updatedIssues)
 
