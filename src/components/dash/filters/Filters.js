@@ -11,6 +11,7 @@ const Filters = () => {
     let importance = {}
     let active = {}
     
+    
     const getFilters = (filter, table) => {
         return issuesContext.issues.map(issue=>{
             if(!(issue[filter] in table)) {
