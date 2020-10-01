@@ -11,7 +11,7 @@ export function IssuesProvider({children}) {
     const [issues, setIssues] = useState([]) //All issues associated with user
     const [filtered, setFiltered] = useState([]) //Filtered list that gets displayed
     const [filters, setFilters] = useState({}) //Table of filters used to get filtered list
-    const [activeIssue, setActiveIssue] = useState() //Defines currently active issue
+    const [activeIssue, setActiveIssue] = useState(null) //Defines currently active issue
 
     // fetches all issues related to user
     useEffect(()=>{
