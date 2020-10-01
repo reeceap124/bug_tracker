@@ -11,17 +11,19 @@ const Filters = () => {
     let importance = {}
     let active = {}
 
-    const updateFiltered = (filter, value) => {
-        const contextFilters = {...issuesContext.filters} // new editable object of filters
-        if (filter in contextFilters) {
-            //if there is a double click or 'all' click remove filter
-            if (filter[value] === ('all' || issuesContext.filters.filter)) {
-                delete contextFilters[filter]
-            }
-            else {
-                contextFilters[filter] = value
-            }
+    const updateFilters = (filter, value) => {
+        const contextFilters = {...issuesContext.filters} // new mutable object of filters
+        
+        //if there is a double click or 'all' click remove filter
+        if (value === ('all' || contextFilters[filter])) {
+            delete contextFilters[filter]
         }
+        //else assign/reassign filter to the value
+        else {
+            contextFilters[filter] = value
+        }
+        //updates filters in context
+        issuesContext.update(issuesContext.filters, contextFilters)
     }
     
 
@@ -31,7 +33,7 @@ const Filters = () => {
                 table[issue[filter]] = 1
                 return <Button key={`${issue[filter]}_${issue.filter}_button`} outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    props.updateFiltered([filter, issue[filter]])
+                    updateFilters(filter, issue[filter])
                 }}>{`${issue[filter]}`}</Button>
             }
             else {
