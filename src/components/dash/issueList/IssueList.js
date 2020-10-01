@@ -8,22 +8,9 @@ import { axiosAuth } from '../../../util/axiosAuth';
 const IssueList = (props) => {
     const id = useUser()
     const issuesContext = useIssues()
-    useEffect(()=>{
-        axiosAuth().get(`/issues/list/${id}`)
-        .then(res=>{
-            if (res.data.error){
-                return console.error(res.data)
-            }
-            issuesContext.update(issuesContext.issues, res.data)
-            issuesContext.update(issuesContext.filtered, res.data)
-        })
-        .catch(err=>{
-            console.error('There was an error fetching your issues', err)
-        })
-    }, [id])
 
     function cardClick(issueId) {
-        props.setActiveIssue(issueId)
+        issuesContext.update(issuesContext.activeIssue, issueId)
     }
     return (
         <section>

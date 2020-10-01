@@ -1,20 +1,23 @@
 import React, {useState, useEffect} from 'react'
+import {useIssues} from '../../../contexts/IssuesContext'
 import CommentsList from './CommentsList'
 import { axiosAuth } from '../../../util/axiosAuth'
 
 const IssueDetail = (props) => {
+    const issuesContext = useIssues()
+    const activeIssue = issuesContext.activeIssue
     const [issue, setIssue] = useState(null)
     const [comments, setComments] = useState([])
     //Retrieves data about specific issue
     //TODO: clean it up by just setting current issue to the clicked issue. No need to do a HTTP request.
     useEffect(()=>{
-        if (props.activeIssue){
-            axiosAuth().get(`/issues/specific/${props.activeIssue}`)
+        if (activeIssue){
+            axiosAuth().get(`/issues/specific/${activeIssue}`)
             .then((res)=>{
                 setIssue(res.data)
             })
             .then(()=>{
-                axiosAuth().get(`/comments/list/${props.activeIssue}`)
+                axiosAuth().get(`/comments/list/${activeIssue}`)
                 .then(res=>{
                     setComments(res.data)
                 })
@@ -23,7 +26,7 @@ const IssueDetail = (props) => {
             .catch(err=>console.error('Trouble getting issue', err))
         }
         
-    }, [props.activeIssue])
+    }, [activeIssue])
 
     if (issue) {
         return (
@@ -33,7 +36,7 @@ const IssueDetail = (props) => {
                 <h3>Contents:</h3>
                 <p>{issue.content}</p>
             </div>
-            <CommentsList issueId={props.activeIssue}/>
+            <CommentsList issueId={activeIssue}/>
             </div>
             
         )
