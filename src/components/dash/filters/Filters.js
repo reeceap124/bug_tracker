@@ -48,7 +48,7 @@ const Filters = () => {
                 <h3>Orgs</h3>
                 <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    props.updateFiltered(['org', 'all'])
+                    updateFilters('org', 'all')
                 }}>All</Button>
                 {getFilters('org', orgs)}
             </div>
@@ -56,7 +56,7 @@ const Filters = () => {
                 <h3>Projects</h3>
                 <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    props.updateFiltered(['project', 'all'])
+                    updateFilters('project', 'all')
                 }}>All</Button>
                 {getFilters('project', projects)}
             </div>
@@ -64,7 +64,7 @@ const Filters = () => {
                 <h3>Active</h3>
                 <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    props.updateFiltered(['open', 'all'])
+                    updateFilters('open', 'all')
                 }}>All</Button>
                 {getFilters('open', active)}
             </div>
@@ -72,7 +72,7 @@ const Filters = () => {
                 <h3>Priority</h3>
                 <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    props.updateFiltered(['importance', 'all'])
+                    updateFilters('importance', 'all')
                 }}>All</Button>
                 {getFilters('importance', importance)}
             </div>
@@ -80,7 +80,7 @@ const Filters = () => {
                 <h3>Role</h3>
                 <Button outline color='secondary' onClick={(e)=>{
                     e.preventDefault()
-                    props.updateFiltered(['role', 'all'])
+                    updateFilters('role', 'all')
                 }}>All</Button>
                 {getFilters('role', roles)}
             </div>
