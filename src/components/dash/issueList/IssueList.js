@@ -22,8 +22,6 @@ const IssueList = (props) => {
         })
     }, [id])
 
-    updateFilter
-
     function cardClick(issueId) {
         props.setActiveIssue(issueId)
     }
