@@ -10,8 +10,21 @@ const Filters = () => {
     let roles = {}
     let importance = {}
     let active = {}
+
+    const updateFiltered = (filter, value) => {
+        const contextFilters = {...issuesContext.filters} // new editable object of filters
+        if (filter in contextFilters) {
+            //if there is a double click or 'all' click remove filter
+            if (filter[value] === ('all' || issuesContext.filters.filter)) {
+                delete contextFilters[filter]
+            }
+            else {
+                contextFilters[filter] = value
+            }
+        }
+    }
     
-    
+
     const getFilters = (filter, table) => {
         return issuesContext.issues.map(issue=>{
             if(!(issue[filter] in table)) {
